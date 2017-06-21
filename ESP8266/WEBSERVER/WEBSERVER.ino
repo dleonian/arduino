@@ -13,7 +13,7 @@ void setup()
  
  sendData("AT+RST\r\n",2000);      // resetear módulo
  sendData("AT+CWMODE=1\r\n",1000); // configurar como cliente
- sendData("AT+CWJAP=\"Fibertel WiFi976 2.4GHz\",\"PASSWORD\"\r\n",8000); //SSID y contraseña para unirse a red 
+ sendData("AT+CWJAP=\"Fibertel WiFi976 2.4GHz\",\"xxxx\"\r\n",8000); //SSID y contraseña para unirse a red 
  sendData("AT+CIFSR\r\n",1000);    // obtener dirección IP
  sendData("AT+CIPMUX=1\r\n",1000); // configurar para multiples conexiones
  sendData("AT+CIPSERVER=1,80\r\n",1000);         // servidor en el puerto 80
@@ -26,13 +26,13 @@ void loop()
    Serial.println("Available !");
    if(esp8266.find("+IPD,")) // revisar si el servidor recibio datos
    {
-    Serial.println("Hay datos!");
+    Serial.println("Hay IPD!");
      delay(1500); // esperar que lleguen los datos hacia el buffer
      int conexionID = esp8266.read()-48; // obtener el ID de la conexión para poder responder
-     Serial.println("Estado: " + String(conexionID));
+     
      esp8266.find("led="); // bucar el texto "led="
      int state = (esp8266.read()-48); // Obtener el estado del pin a mostrar
-     //Serial.println("Estado: " + String(state));
+     Serial.println("Estado: " + String(state));
      digitalWrite(13, state); // Cambiar estado del pin
      
      while(esp8266.available()){

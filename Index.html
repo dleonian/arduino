@@ -1,0 +1,63 @@
+<html>
+
+<head>
+    <title>ESP8266 LED Control</title>
+    <script src="http://code.jquery.com/jquery-2.2.4.min.js" integrity="sha256-BbhdlvQf/xTY9gja0Dq3HiwQF8LaCRTXxZKRutelT44="
+        crossorigin="anonymous"></script>
+</head>
+
+<body>
+    <input type="hidden" class="currentStatus" value="" />
+
+    <label>IP:</label> <input type="text" name="ip" />
+    <button class="button button-off" data-status="0">APAGAR</button>
+    <button class="button button-on" data-status="1">PRENDER</button>
+    </script>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $.ajaxSetup({
+                timeout: 3000
+            });
+
+            $(".button").click(function () {
+                var status = $(this).attr('data-status');
+                var urlRequest = "http://192.168.0.26/led=" + status.toString();
+                
+                $(".currentStatus").val(status);
+
+                $.ajax({
+                    url: urlRequest,
+                    type: 'GET',
+                    tryCount: 0,
+                    retryLimit: 5,
+                    success: function (json) {
+                        //do something
+                        alert("success");
+                    },
+                    error: function (xhr, textStatus, errorThrown) {
+                        if (textStatus == 'timeout') {
+                            $.ajax(this);
+                            return;
+                        }
+                        if (xhr.status == 500) {
+                            //handle error
+                            alert("500");
+                        } else {
+                            if($(".currentStatus").val() == 1)
+                            {
+                                $(".button-off").show();
+                                $(".button-on").hide();
+                            }
+                            else{
+                                 $(".button-off").hide();
+                                $(".button-on").show();
+                            }
+                        }
+                    }
+                });
+            });
+        });
+    </script>
+</body>
+
+</html>
