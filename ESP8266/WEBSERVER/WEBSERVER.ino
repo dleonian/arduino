@@ -62,6 +62,11 @@ void loop()
      sendData(comandoCerrar,3000);
    }
  }
+ else
+  {
+    int val = digitalRead(13);
+   // Serial.print(val);
+  }
 }
 
 /*
