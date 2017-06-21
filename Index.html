@@ -9,7 +9,8 @@
 <body>
     <input type="hidden" class="currentStatus" value="" />
 
-    <label>IP:</label> <input type="text" name="ip" />
+    <p>IP: <input type="text" class="ip" /></p>
+    <img src="https://loading.io/spinners/spinner/index.ajax-spinner-preloader.svg" alt="loading" style="display:none;" class="imageLoading" />
     <button class="button button-off" data-status="0">APAGAR</button>
     <button class="button button-on" data-status="1">PRENDER</button>
     <h1 class="message"></h1>
@@ -22,9 +23,16 @@
 
             $(".button").click(function () {
                 var status = $(this).attr('data-status');
-                var urlRequest = "http://192.168.0.26/led=" + status.toString();
+                var ip = ($(".ip").val() == "") ? "192.168.0.26" : $(".ip").val();
                 
+                var urlRequest = "http://"+ ip +"/led=" + status.toString();
+
                 $(".currentStatus").val(status);
+
+                $(".button").each(function () {
+                    $(this).hide();
+                    $(".imageLoading").show();
+                });
 
                 $.ajax({
                     url: urlRequest,
@@ -42,14 +50,18 @@
                             //handle error
                             alert("500");
                         } else {
-                            if($(".currentStatus").val() == 1)
-                            {
+                            if ($(".currentStatus").val() == 1) {
                                 $(".message").css('color', 'green');
                                 $(".message").text("PRENDIDO!");
-                            }
-                            else{
+                                $(".button-off").show();
+                                $(".imageLoading").hide();
+                            } else {
                                 $(".message").css('color', 'red');
-                               $(".message").text("APAGADO!");
+                                $(".message").text("APAGADO!");
+                                $(".button").each(function () {
+                                $(".button-on").show();
+                                });
+                                $(".imageLoading").hide();
                             }
                         }
                     }
