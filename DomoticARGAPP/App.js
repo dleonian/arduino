@@ -4,7 +4,10 @@ import { StyleSheet, AppRegistry, Text, TextInput, View, Button, Alert, Switch,I
 export default class PizzaTranslator extends Component {
   constructor(props) {
     super(props);
-    this.state = { ip: '192.168.0.24', statusMessage: '' };
+    this.state = { 
+      ip: '192.168.0.24', 
+      statusMessage: '' 
+    };
   }
 
   requestLed(num, prender) {
@@ -33,82 +36,102 @@ export default class PizzaTranslator extends Component {
 
   render() {
     return (
-      <View style={{ marginTop: 10, flex: 1,alignItems:'center', flexDirection: 'column' }}>
-        
-        <View style={styles.cover}>
-              <Image resizeMode={Image.resizeMode.cover}
-            source={require('./img/domoticarg.png')}
-          />
-        </View>
+      <View style={styles.mainCotainer}>
 
-      <View style={styles.ip}>
-        <Text> Ingrese la IP del dispositivo</Text>
-        <TextInput
-          style={{height: 40, borderColor: 'gray', borderWidth: 1}}
-          onChangeText={(ip) => this.setState({ip})}
-          value={this.state.ip}
-        />
+        <View style={styles.cover}>
+          <Text style={styles.homeText}>DomoticARG</Text>
+          <Text style={styles.homeSubTitle}>v0.1</Text>
         </View>
 
         <View style={styles.ip}>
-        <Text style={{ fontSize: 20 }}>
-          Luz 01
-        </Text>
+          <Text style={ styles.lightText }> Ingrese la IP del dispositivo</Text>
+          <TextInput
+            style={{height: 40, borderColor: 'white', color:'white', borderWidth: 1, textAlign: 'center'}}
+            onChangeText={(ip) => this.setState({ip})}
+            value={this.state.ip}
+          />
+        </View>
 
-        <Button
-          onPress={() => {
-            this.setState({ statusMessage: 'activado' });
-            this.requestLed(1, true);
-          }}
-          title="Encender"
-        />
+        <View style={styles.luz}>
+          <Text style={styles.lightText}>Luz 01</Text>
+          <Button
+            color="#27ae60"
+            onPress={() => {
+              this.setState({ statusMessage: 'activado' });
+              this.requestLed(1, true);
+            }}
+            title="Encender"
+          />
 
-        <Button
-          style={styles.button}
-          onPress={() => {
-            this.setState({ statusMessage: 'apagado' });
-            this.requestLed(1, false);
-          }}
-          title="Apagar"
-        />
-        <Text style={styles.buttonOff}>{this.state.statusMessage}</Text>
-
-        <Text style={{ fontSize: 20 }}>
-        Luz 02
-        </Text>
-        <Button
-          onPress={() => {
-            this.setState({ statusMessage2: 'activado' });
-            this.requestLed(2, true);
-          }}
-          title="Encender"
-        />
-        <Button 
-          style={styles.button}  
-          onPress={() => { 
-            this.setState({ statusMessage2: 'apagado' });
-            this.requestLed(2, false);
-          }}
-          title="Apagar"
-        />
-        <Text style={styles.buttonOff}>{this.state.statusMessage2}</Text>
-      </View>
-
-      </View>
+          <Button
+            color="#c0392b"
+            onPress={() => {
+              this.setState({ statusMessage: 'apagado' });
+              this.requestLed(1, false);
+            }}
+            title="Apagar"
+          />
+          <Text style={styles.buttonOff}>{this.state.statusMessage}</Text>
+        </View>
         
+        <View style={styles.luz}>
+          <Text style={styles.lightText}>
+            Luz 02
+          </Text>
+          <Button
+            color="#27ae60"
+            onPress={() => {
+              this.setState({ statusMessage2: 'activado' });
+              this.requestLed(2, true);
+            }}
+            title="Encender"
+          />
+          <Button 
+          color="#c0392b" 
+            onPress={() => { 
+              this.setState({ statusMessage2: 'apagado' });
+              this.requestLed(2, false);
+            }}
+            title="Apagar"
+          />
+          <Text>{this.state.statusMessage2}</Text>
+        </View>
+      </View>
     );
   }
 
 }
 
 const styles = StyleSheet.create({
+  mainCotainer:{ 
+    paddingTop: 100, 
+    flex: 1,
+    alignItems:'center', 
+    flexDirection: 'column', 
+    backgroundColor:"#34495e"
+  },
+  homeSubTitle:{
+    fontSize: 15,
+    color: 'white'
+  },
+  ip:{
+    marginBottom: 50
+  },
+  cover:{
+    marginBottom: 50
+  },
   button: {
     flex: 1
   },
-  buttonOff: {
-    backgroundColor: 'red',
-    fontWeight: 'bold',
-    color: 'white',
-    fontSize: 12
+  homeText:{
+    fontSize: 25,
+    color: 'white'
+  },
+  luz: {
+    width:300
+  },
+  lightText: {
+    fontSize: 20,
+    color: 'white'
   }
 });
