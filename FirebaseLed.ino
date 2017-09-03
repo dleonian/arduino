@@ -5,10 +5,11 @@ const char* ssid = "ENTER YOUT SSID HERE";
 const char* password = "ENTER YOUR WIFI PASS HERE";
 
 // Set these to run example.
-#define FIREBASE_HOST " .firebaseio.com"
-#define FIREBASE_AUTH ""
+#define FIREBASE_HOST ".firebaseio.com"
+#define FIREBASE_AUTH "INSERT FIREBASE AUTH KEY"
 
 int ledPin = 13;
+int ledPin2 = 5;
 WiFiServer server(80);
  
 void setup() {
@@ -17,6 +18,8 @@ void setup() {
  
   pinMode(ledPin, OUTPUT);
   digitalWrite(ledPin, LOW);
+  pinMode(ledPin2, OUTPUT);
+  digitalWrite(ledPin2, LOW);
  
   // Connect to WiFi network
   Serial.println();
@@ -44,13 +47,14 @@ void setup() {
   Serial.println("/");
 
   Firebase.begin(FIREBASE_HOST, FIREBASE_AUTH);
-  Firebase.set("luzPin", 0);
+  Firebase.set("disp1/luzPin", 0);
+  Firebase.set("disp1/luzPin2", 0);
   Serial.println("Firebase OK");
 }
 
 int fbLedValue = 0;
 void loop() {
-  int val = Firebase.getInt("luzPin");
+  int val = Firebase.getInt("disp1/luzPin");
   Serial.println(val);
 
   if(val == 0)
@@ -61,7 +65,17 @@ void loop() {
   {
     digitalWrite(ledPin, HIGH);
   }
-  
+  val = Firebase.getInt("disp1/luzPin2");
+  Serial.println(val);
+
+  if(val == 0)
+  {
+    digitalWrite(ledPin2, LOW);
+  }
+  else
+  {
+    digitalWrite(ledPin2, HIGH);
+  }  
   delay(1000);
 }
  
